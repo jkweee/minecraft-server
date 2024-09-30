@@ -7,6 +7,8 @@ services:
       - "25565:25565"
     environment:
       EULA: "TRUE"
+      MOTD: "The Kween of all servers."
+      DIFFICULTY: "normal"
     volumes:
       - minecraft-data:/data
     restart: 'unless-stopped'
