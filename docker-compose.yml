@@ -9,6 +9,7 @@ services:
       EULA: "TRUE"
     volumes:
       - minecraft-data:/data
+    restart: 'unless-stopped'
 
 volumes:
   minecraft-data:
