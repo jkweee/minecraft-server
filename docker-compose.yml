@@ -7,8 +7,14 @@ services:
       - "25565:25565"
     environment:
       EULA: "TRUE"
-      MOTD: "The Kween of all servers."
-      DIFFICULTY: "normal"
+      SERVER_NAME: "Kwe-san"
+      MOTD: "Welcome! Chill vibes for chill miners :)"
+      DIFFICULTY: "hard"
+      MAX_PLAYERS: "10"
+      FORCE_GAMEMODE: "true"
+      ALLOW_FLIGHT: "false"
+      GAMEMODE: "survival"
+      SPAWN_PROTECTION: "0"
     volumes:
       - minecraft-data:/data
     restart: 'unless-stopped'
