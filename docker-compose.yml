@@ -1,4 +1,15 @@
 services:
+  web:
+    image: itzg/rcon
+    environment:
+      RWA_USERNAME: admin
+      RWA_PASSWORD: "Admin2024!"
+      RWA_ADMIN: "TRUE"
+      RWA_RCON_HOST: mc
+      RWA_RCON_PASSWORD: "RCONAdmin2024!"
+    ports:
+      - "4326:4326"
+      - "4327:4327"
   mc:
     image: itzg/minecraft-server
     tty: true
@@ -13,6 +24,7 @@ services:
       RCON_CMDS_STARTUP: |-
         gamerule keepInventory true
         gamerule maxEntityCramming 0
+      RCON_PASSWORD: "RCONAdmin2024!"
       DIFFICULTY: "hard"
       MAX_PLAYERS: "10"
       FORCE_GAMEMODE: "true"
