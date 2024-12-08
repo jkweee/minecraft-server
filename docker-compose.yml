@@ -18,7 +18,7 @@ services:
       - "25565:25565"
     environment:
       EULA: "TRUE"
-      SERVER_NAME: "Kwe-san"
+      SERVER_NAME: "JK1-GNOCCHI"
       MOTD: "Welcome! Chill vibes for chill miners :)"
       VERSION: "1.21.3"
       RCON_CMDS_STARTUP: |-
