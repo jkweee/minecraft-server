@@ -9,17 +9,45 @@ services:
       EULA: "TRUE"
       SERVER_NAME: "Kwe-san"
       MOTD: "Welcome! Chill vibes for chill miners :)"
+      VERSION: "1.21.3"
+      RCON_CMDS_STARTUP: |-
+        gamerule keepInventory true
+        gamerule maxEntityCramming 0
       DIFFICULTY: "hard"
       MAX_PLAYERS: "10"
       FORCE_GAMEMODE: "true"
       ALLOW_FLIGHT: "false"
       GAMEMODE: "survival"
       SPAWN_PROTECTION: "0"
+    depends_on:
+      restore-backup:
+        condition: service_completed_successfully
     volumes:
       - minecraft-data:/data
     restart: 'unless-stopped'
+  restore-backup:
+    image: itzg/mc-backup
+    restart: "no"
+    entrypoint: restore-tar-backup
+    volumes:
+      - ./minecraft-data:/data
+      - ./minecraft-backups:/backups:ro
+  backups:
+    image: itzg/mc-backup
+    depends_on:
+      mc:
+        condition: service_healthy
+    environment:
+      BACKUP_INTERVAL: "2h"
+      RCON_HOST: mc
+      INITIAL_DELAY: 0
+      PAUSE_IF_NO_PLAYERS: "true"
+    volumes:
+      - ./minecraft-data:/data:ro
+      - ./minecraft-backups:/backups
 
 volumes:
   minecraft-data:
     external: true
-
+  minecraft-backups:
+    external: true
