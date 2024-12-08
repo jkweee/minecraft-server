@@ -52,11 +52,14 @@ services:
     environment:
       BACKUP_INTERVAL: "2h"
       RCON_HOST: mc
+      RCON_PASSWORD: "RCONAdmin2024!"
+      PRUNE_BACKUPS_DAYS: "730"
       INITIAL_DELAY: 0
       PAUSE_IF_NO_PLAYERS: "true"
     volumes:
       - ./minecraft-data:/data:ro
       - ./minecraft-backups:/backups
+    restart: 'unless-stopped'
 
 volumes:
   minecraft-data:
