@@ -42,8 +42,8 @@ services:
     restart: "no"
     entrypoint: restore-tar-backup
     volumes:
-      - ./minecraft-data:/data
-      - ./minecraft-backups:/backups:ro
+      - minecraft-data:/data
+      - minecraft-backups:/backups:ro
   backups:
     image: itzg/mc-backup
     depends_on:
@@ -57,8 +57,8 @@ services:
       INITIAL_DELAY: 0
       PAUSE_IF_NO_PLAYERS: "true"
     volumes:
-      - ./minecraft-data:/data:ro
-      - ./minecraft-backups:/backups
+      - minecraft-data:/data:ro
+      - minecraft-backups:/backups
     restart: 'unless-stopped'
 
 volumes:
