@@ -31,8 +31,8 @@ services:
       ALLOW_FLIGHT: "false"
       GAMEMODE: "survival"
       SPAWN_PROTECTION: "0"
-      VIEW_DISTANCE: "32"
-      MEMORY: "4G"
+      VIEW_DISTANCE: "18"
+      MEMORY: "6G"
     depends_on:
       restore-backup:
         condition: service_completed_successfully
