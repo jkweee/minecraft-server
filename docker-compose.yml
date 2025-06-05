@@ -33,6 +33,10 @@ services:
       SPAWN_PROTECTION: "0"
       MEMORY: "6G"
       TYPE: "FABRIC"
+      MODRINTH_PROJECTS: |
+        fabric-api
+        lithium
+        ferrite-core
       SYNC_CHUNK_WRITES: "FALSE"
       SIMULATION_DISTANCE:  "5"
       VIEW_DISTANCE: "18"
