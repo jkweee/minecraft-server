@@ -31,8 +31,11 @@ services:
       ALLOW_FLIGHT: "false"
       GAMEMODE: "survival"
       SPAWN_PROTECTION: "0"
-      VIEW_DISTANCE: "18"
       MEMORY: "6G"
+      TYPE: "FABRIC"
+      SYNC_CHUNK_WRITES: "FALSE"
+      SIMULATION_DISTANCE:  "5"
+      VIEW_DISTANCE: "18"
     depends_on:
       restore-backup:
         condition: service_completed_successfully
