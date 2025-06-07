@@ -19,7 +19,9 @@ services:
     environment:
       EULA: "TRUE"
       SERVER_NAME: "JK1-GNOCCHI"
-      MOTD: "Welcome! Chill vibes for chill miners :)"
+      MOTD: |
+        \u00A79Chill vibes for chill miners\u00A7r
+        \u00A78Recommended mods: Sodium, Xaero's Minimap
       VERSION: "1.21.5"
       RCON_CMDS_STARTUP: |-
         gamerule keepInventory true
