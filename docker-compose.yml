@@ -1,15 +1,4 @@
 services:
-  web:
-    image: itzg/rcon
-    environment:
-      RWA_USERNAME: admin
-      RWA_PASSWORD: "Admin2024!"
-      RWA_ADMIN: "TRUE"
-      RWA_RCON_HOST: mc
-      RWA_RCON_PASSWORD: "RCONAdmin2024!"
-    ports:
-      - "4326:4326"
-      - "4327:4327"
   mc:
     image: itzg/minecraft-server
     tty: true
@@ -42,32 +31,6 @@ services:
       SYNC_CHUNK_WRITES: "FALSE"
       SIMULATION_DISTANCE:  "5"
       VIEW_DISTANCE: "18"
-    depends_on:
-      restore-backup:
-        condition: service_completed_successfully
     volumes:
       - ./minecraft-data:/data
-    restart: 'unless-stopped'
-  restore-backup:
-    image: itzg/mc-backup
-    restart: "no"
-    entrypoint: restore-tar-backup
-    volumes:
-      - ./minecraft-data:/data
-      - ./minecraft-backups:/backups:ro
-  backups:
-    image: itzg/mc-backup
-    depends_on:
-      mc:
-        condition: service_healthy
-    environment:
-      BACKUP_INTERVAL: "2h"
-      RCON_HOST: mc
-      RCON_PASSWORD: "RCONAdmin2024!"
-      PRUNE_BACKUPS_DAYS: "730"
-      INITIAL_DELAY: 0
-      PAUSE_IF_NO_PLAYERS: "true"
-    volumes:
-      - ./minecraft-data:/data:ro
-      - ./minecraft-backups:/backups
     restart: 'unless-stopped'
