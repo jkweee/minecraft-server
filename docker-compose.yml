@@ -22,7 +22,7 @@ services:
       ALLOW_FLIGHT: "false"
       GAMEMODE: "survival"
       SPAWN_PROTECTION: "0"
-      MEMORY: "6G"
+      MEMORY: "12G"
       TYPE: "FABRIC"
       MODRINTH_PROJECTS: |
         fabric-api
