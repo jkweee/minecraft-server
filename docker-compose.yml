@@ -31,6 +31,12 @@ services:
       SYNC_CHUNK_WRITES: "FALSE"
       SIMULATION_DISTANCE:  "5"
       VIEW_DISTANCE: "18"
+      OPS: |
+        m1nefury
+      WHITELIST: |
+        kelvinferd
+        jferdy
+        sosiskeju
     volumes:
       - ./minecraft-data:/data
     restart: 'unless-stopped'
