@@ -1,3 +1,4 @@
-minecraft-backups/*
+minecraft-backups/*.tar.gz
+minecraft-backups/*.log
 minecraft-data/*
 minecraft-data-*/*
