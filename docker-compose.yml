@@ -39,6 +39,8 @@ services:
         kelvinferd
         jferdy
         sosiskeju
+        har0bed
+        clarencedude
     volumes:
       - ./minecraft-data:/data
     restart: 'unless-stopped'
