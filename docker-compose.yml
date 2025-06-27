@@ -12,7 +12,7 @@ services:
       MOTD: |
         \u00A79Chill vibes for chill miners\u00A7r
         \u00A78Recommended mods: Sodium, Xaero's Minimap
-      VERSION: "1.21.5"
+      VERSION: "1.21.6"
       RCON_CMDS_STARTUP: |-
         gamerule keepInventory true
         gamerule maxEntityCramming 0
@@ -27,8 +27,13 @@ services:
       TYPE: "FABRIC"
       MODRINTH_PROJECTS: |
         fabric-api
+        fabric-language-kotlin
         lithium
         ferrite-core
+        spark
+        death-counter
+        fallingtree
+        appleskin
       SYNC_CHUNK_WRITES: "FALSE"
       SIMULATION_DISTANCE:  "5"
       VIEW_DISTANCE: "18"
