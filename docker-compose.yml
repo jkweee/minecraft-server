@@ -31,6 +31,9 @@ services:
         lithium
         spark
         fallingtree
+        appleskin
+        collective
+        villager-names-serilum
       SYNC_CHUNK_WRITES: "FALSE"
       SIMULATION_DISTANCE:  "5"
       VIEW_DISTANCE: "18"
