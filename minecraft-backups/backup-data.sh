@@ -1,4 +1,5 @@
 #!/bin/bash
+# TO USE: run from minecraft/minecraft-backups
 logfile="./backup-data.log"
 current_datetime=$(date +"%Y.%m.%d %H.%M.%S")
 source="../minecraft-data"
