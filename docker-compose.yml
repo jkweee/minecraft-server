@@ -12,7 +12,7 @@ services:
       MOTD: |
         \u00A79Chill vibes for chill miners\u00A7r
         \u00A78Recommended mods: Sodium, Xaero's Minimap
-      VERSION: "1.21.7"
+      VERSION: "1.21.9"
       RCON_CMDS_STARTUP: |-
         gamerule keepInventory true
         gamerule maxEntityCramming 0
@@ -31,7 +31,6 @@ services:
         lithium
         spark
         fallingtree
-        appleskin
         collective
         villager-names-serilum
       SYNC_CHUNK_WRITES: "FALSE"
