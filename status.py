@@ -82,19 +82,25 @@ if __name__ == "__main__":
     If players are online, send a telert
     """
     # nohup python3 status.py &
-    # kill 105912 (pid)
+    # kill 123041 (pid)
 
     first_time = True
-    last_player_count = -1
+    last_player_count = 0
 
     while True:
+        # get server population
         server_population = get_server_population()
         current_player_count = server_population["player_count"]
         current_players = server_population["player_list"]
 
-        difference_in_players = str(current_player_count - last_player_count)
+        # format difference in players
+        diff = current_player_count - last_player_count
+        difference_in_players = f"+{str(diff)}" if diff > 0 else str(diff)
 
-        status_message = f"There are {current_player_count} players online ({difference_in_players}): {current_players}"
+        # construct status message
+        status_message = f"There are {current_player_count} players online (△{difference_in_players})"
+        if current_player_count > 0:
+            status_message += f": {current_players}"
         if last_player_count != current_player_count or first_time:
             send(status_message)
             if first_time:
@@ -104,6 +110,7 @@ if __name__ == "__main__":
 
         last_player_count = current_player_count
 
+        # poll only every minute
         time.sleep(60)
 
 
