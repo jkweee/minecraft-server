@@ -59,8 +59,8 @@ def get_last_server_population() -> dict:
 
     logger.info(f"Reading the last known server population")
 
-    if os.path.exists('status.json'):
-        with open('status.json', 'r') as open_file:
+    if os.path.exists('server_status.json'):
+        with open('server_status.json', 'r') as open_file:
             last_status = json.load(open_file)
     else:
         last_status = {
