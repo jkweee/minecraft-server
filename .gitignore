@@ -2,5 +2,6 @@ minecraft-backups/*.tar.gz
 minecraft-backups/*.log
 minecraft-data/*
 minecraft-data-*/*
-status.json
+server_status.json
+server_status.log
 venv/

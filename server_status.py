@@ -77,17 +77,17 @@ def get_last_server_population() -> dict:
 
 def main():
 
+    # change working directory to file path
+    script_directory = os.path.dirname(os.path.abspath(__file__))
+    os.chdir(script_directory)
+    logger.info(f"Current working directory: {os.getcwd()}")
+
     # set up logging
     logging.basicConfig(filename='server_status.log', level=logging.INFO)
     console = logging.StreamHandler()
     console.setLevel(logging.DEBUG)
     logging.getLogger('').addHandler(console)
     logger.info("Starting server status querying... :D")
-
-    # change working directory to file path
-    script_directory = os.path.dirname(os.path.abspath(__file__))
-    os.chdir(script_directory)
-    logger.info(f"Current working directory: {os.getcwd()}")
 
     """
     APPROACH 0
