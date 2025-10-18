@@ -46,8 +46,10 @@ def get_server_population() -> dict:
     players = players_match.group(1).split(", ") if players_match else []
 
     server_population = {
+        "version": 1,
         "player_count": num_players,
-        "player_list": players
+        "player_list": players,
+        "last_checked": int(time.time()),
     }
 
     logger.info(f"Finished querying server to get server population using the 'list' command and returned {server_population}")
@@ -55,15 +57,20 @@ def get_server_population() -> dict:
     return server_population
 
 
-def get_last_server_population() -> dict:
+def get_previous_server_population() -> dict:
+    """Read previous server population from a json file
+
+    :return: dict representing the last known server population
+    """
 
     logger.info(f"Reading the last known server population")
 
     if os.path.exists('server_status.json'):
         with open('server_status.json', 'r') as open_file:
-            last_status = json.load(open_file)
+            last_population = json.load(open_file)
     else:
-        last_status = {
+        # increment version when making changes
+        last_population = {
             "version": 1,
             "player_count": 0,
             "player_list": [],
@@ -72,11 +79,25 @@ def get_last_server_population() -> dict:
 
     logger.info(f"Finished reading the last known server population")
 
-    return last_status
+    return last_population
+
+
+def save_server_population_to_file(server_population:dict) -> None:
+    """Save server population to json file
+
+    :param server_population: dict representing the last known server population
+    """
+    
+    logger.info(f"Saving server population data to json")
+
+    with open('server_status.json', 'w') as output:
+        json.dump(server_population, output)
+
+    logger.info(f"Finished saving server status to json file")
 
 
 def main():
-
+    
     # change working directory to file path
     script_directory = os.path.dirname(os.path.abspath(__file__))
     os.chdir(script_directory)
@@ -87,70 +108,33 @@ def main():
     console = logging.StreamHandler()
     console.setLevel(logging.DEBUG)
     logging.getLogger('').addHandler(console)
-    logger.info("Starting server status querying... :D")
 
-    """
-    APPROACH 0
-    Ping the server every minute.
-    If players are online, send a telert
-    """
-    # nohup python3 status.py &
+    # get previous server population
+    previous_server_population = get_previous_server_population()
+    previous_player_count = previous_server_population["player_count"]
 
-    first_time = True
-    last_player_count = 0
+    # get server population
+    server_population = get_server_population()
+    current_player_count = server_population["player_count"]
+    current_players = server_population["player_list"]
 
-    while True:
-        # get server population
-        server_population = get_server_population()
-        current_player_count = server_population["player_count"]
-        current_players = server_population["player_list"]
+    # format difference in players
+    diff = current_player_count - previous_player_count
+    difference_in_players = f"+{str(diff)}" if diff > 0 else str(diff)
 
-        # format difference in players
-        diff = current_player_count - last_player_count
-        difference_in_players = f"+{str(diff)}" if diff > 0 else str(diff)
-
-        # construct status message
-        status_message = f"There are {current_player_count} players online ({difference_in_players} △)"
-        if current_player_count > 0:
-            status_message += f": {current_players}"
-        if last_player_count != current_player_count or first_time:
-            send(status_message)
-            if first_time:
-                first_time = False
-
-        logger.info(f"{time.strftime('%Y-%m-%d %H:%M:%S')} - {status_message}")
-
-        last_player_count = current_player_count
-
-        # poll only every minute
-        time.sleep(60)
+    # construct status message
+    status_message = f"There are {current_player_count} players online ({difference_in_players} △)"
+    if current_player_count > 0:
+        status_message += f": {current_players}"
+    if previous_player_count != current_player_count:
+        send(status_message)
 
 
+    logger.info(f"{time.strftime('%Y-%m-%d %H:%M:%S')} - {status_message}")
 
-
-
-
-    """
-
-    APPROACH 1
-    Info we want:
-    - When we last checked
-    - What changed since it last changed
-    - Print changes if: anyone logged on, anyone logged off
-
-    """
-
-
- 
-    """
-    This needs setting up in telert
-    """
-    # send("Test message from Python")
-    # results = execute_minecraft_command("list")
-    # print(f"Sending this result: {results}")
-    # send(results)
+    # save current server population to json
+    save_server_population_to_file(server_population)
 
 
 if __name__ == "__main__":
     main()
-
