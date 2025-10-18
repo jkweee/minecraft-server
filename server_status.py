@@ -97,14 +97,19 @@ def save_server_population_to_file(server_population:dict) -> None:
 
 
 def main():
-    
+
     # change working directory to file path
     script_directory = os.path.dirname(os.path.abspath(__file__))
     os.chdir(script_directory)
     logger.info(f"Current working directory: {os.getcwd()}")
 
     # set up logging
-    logging.basicConfig(filename='server_status.log', level=logging.INFO)
+    logging.basicConfig(
+        filename='server_status.log', 
+        level=logging.INFO,
+        format='%(asctime)s %(levelname)-8s %(message)s',
+        datefmt='%Y-%m-%d %H:%M:%S',
+    )
     console = logging.StreamHandler()
     console.setLevel(logging.DEBUG)
     logging.getLogger('').addHandler(console)
