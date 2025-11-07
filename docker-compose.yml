@@ -45,6 +45,7 @@ services:
         sosiskeju
         har0bed
         clarencedude
+        snoopypoopi
     volumes:
       - ./minecraft-data:/data
     restart: 'unless-stopped'
