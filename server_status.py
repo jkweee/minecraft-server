@@ -13,6 +13,10 @@ logger = logging.getLogger(__name__)
 TODO: the point of this script is to let us know who is currently on, who has been on since I last checked, and whether the server has been backed up since the last player left
 - Approach 1: 5-minute timer (additional logic required to see if msg required)
 - Approach 2: Read logs as it gets streamed
+
+TODO: Needs a check to see if the container is even up, if the server is up, etc. 
+- Alert us if the server is down!
+
 """
 
 def execute_minecraft_command(command:str) -> str:
