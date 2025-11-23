@@ -6,6 +6,10 @@ import signal
 import subprocess
 import logging
 
+"""
+This script simulates a cron job running in the background so that you don't have to go to crontab -e just to test things
+"""
+
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s: %(message)s")
 
 STOP = False
