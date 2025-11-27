@@ -47,6 +47,7 @@ services:
         clarencedude
         snoopypoopi
         tcaura
+        banzi101
     volumes:
       - ./minecraft-data:/data
     restart: 'unless-stopped'
