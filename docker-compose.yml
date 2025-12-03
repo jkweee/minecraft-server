@@ -48,7 +48,6 @@ services:
         snoopypoopi
         tcaura
         banzi101
-        aixureee
         mcdouggets
     volumes:
       - ./minecraft-data:/data
