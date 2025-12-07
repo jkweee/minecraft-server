@@ -11,12 +11,11 @@ services:
       SERVER_NAME: "JK1-GNOCCHI"
       MOTD: |
         \u00A79Chill vibes for chill miners\u00A7r
-        \u00A78Recommended mods: Sodium, Xaero's Minimap
+        \u00A78Keep inventory is ON! Enjoy!
       VERSION: "1.21.10"
       RCON_CMDS_STARTUP: |-
         gamerule keepInventory true
         gamerule maxEntityCramming 0
-      RCON_PASSWORD: "RCONAdmin2024!"
       DIFFICULTY: "hard"
       MAX_PLAYERS: "10"
       FORCE_GAMEMODE: "true"
