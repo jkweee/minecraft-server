@@ -11,7 +11,7 @@ services:
       SERVER_NAME: "JK1-GNOCCHI"
       MOTD: |
         \u00A79Chill vibes for chill miners\u00A7r
-        \u00A78Keep inventory is ON! Enjoy!
+        \u00A78Keep inventory is on!
       VERSION: "1.21.10"
       RCON_CMDS_STARTUP: |-
         gamerule keepInventory true
