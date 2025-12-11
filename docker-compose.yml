@@ -49,6 +49,7 @@ services:
         banzi101
         mcdouggets
         aixuree
+        t0nlycrafter
     volumes:
       - ./minecraft-data:/data
     restart: 'unless-stopped'
