@@ -95,7 +95,7 @@ def save_server_population_to_file(server_population:dict) -> None:
     logger.info(f"Saving server population data to json")
 
     with open('server_status.json', 'w') as output:
-        json.dump(server_population, output)
+        json.dump(server_population, output, indent=4)
 
     logger.info(f"Finished saving server status to json file")
 
