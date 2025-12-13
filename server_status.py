@@ -5,7 +5,7 @@ import os
 import re
 import time
 import logging
-from enum import Enum
+from collections import defaultdict
 from telert import send
 
 logger = logging.getLogger(__name__)
@@ -47,11 +47,11 @@ class ServerStatus:
                 file = json.load(open_file)
                 self.version = file['version']
                 self.server_last_queried = file['server_last_queried']
-                self.player_details = file['player_details'] if file['player_details'] != "null" else {}
+                self.player_details = file['player_details'] if file['player_details'] != None else {}
         else:
             self.version = 2 # schema version
             self.server_last_queried = now()
-            self.player_details = "null"
+            self.player_details = {}
 
 
     def save_to_file(self, filepath:str="server_status.json") -> None:
@@ -62,7 +62,7 @@ class ServerStatus:
         server_population = {
             "version": 2,
             "server_last_queried": self.server_last_queried,
-            "player_details": self.player_details if len(self.player_details) > 0 else "null",
+            "player_details": self.player_details if len(self.player_details) > 0 else None,
         }
 
         with open(filepath, 'w') as output:
@@ -80,6 +80,16 @@ class ServerStatus:
                 online_players.append(player)
 
         return online_players
+
+
+    def add_new_player(self, player:str) -> None:
+        """Adds a new player with default values and mark them as online. Assumption: we only call this function when discovering them online for the first time
+        """
+        self.player_details[player] = {
+            "last_login": now(),
+            "last_logout": 0,
+            "is_online": True
+        }
 
 
     # boilerplate (sigh)
@@ -101,7 +111,7 @@ class ServerStatus:
     def get_player_details(self) -> dict:
         return self.player_details
 
-    def set_player_detail(self, player: str, detail: dict, value) -> None:
+    def set_player_detail(self, player: str, detail: str, value) -> None:
         self.player_details[player][detail] = value
 
     def get_player_detail(self, player: str, detail: dict) -> dict:
@@ -163,11 +173,20 @@ def get_current_server_status() -> ServerStatus:
     # update status on who is online and last seen
     current_players = query_online_players()
     status.set_server_last_queried(now())
-    for player in status.get_player_details().keys():
+
+    # update existing players
+    known_players = status.get_player_details().keys()
+    for player in known_players:
         if player in current_players:
             status.set_player_detail(player, "is_online", True)
         else:
             status.set_player_detail(player, "is_online", False)
+
+    # handle new players
+    new_players = set(current_players) - set(known_players)
+    for player in new_players:
+        status.add_new_player(player)
+        # TODO: log new player added/detected whatever
 
     return status
 
@@ -210,9 +229,6 @@ def send_telegram_updates() -> None:
 
     """
         This function sends a Telegram update whenever there is a change in server population
-        Note:
-        - Uses logic built for the old status json
-        - This doesn't update the last_login or last_logout details
     """
 
     # read previous state and get current state
@@ -233,6 +249,7 @@ def send_telegram_updates() -> None:
         send(status_message)
 
     # save and log
+    update_login_and_logout_details(current_status) # not needed for this legacy function but good for data integrity
     current_status.save_to_file('server_status.json')
     logger.info(f"{time.strftime('%Y-%m-%d %H:%M:%S')} - {status_message}")
 
