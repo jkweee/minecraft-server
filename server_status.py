@@ -29,14 +29,12 @@ class ServerStatus:
     def __init__(self, filepath:str=""):
         """If a filepath is provided, read from status file automatically.
 
-        :param filepath: file to read from, defaults to "server_status.json"
+        :param filepath: file to read from
         """
         if filepath != "":
             self.read_from_file(filepath)
         else:
-            self.version = 2 # schema version
-            self.server_last_queried = now()
-            self.player_details = {}
+            self.read_from_file()
 
 
     def read_from_file(self, filepath:str="server_status.json") -> None:
@@ -50,6 +48,10 @@ class ServerStatus:
                 self.version = file['version']
                 self.server_last_queried = file['server_last_queried']
                 self.player_details = file['player_details']
+        else:
+            self.version = 2 # schema version
+            self.server_last_queried = now()
+            self.player_details = {}
 
 
     def save_to_file(self, filepath:str="server_status.json") -> None:
