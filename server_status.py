@@ -127,8 +127,7 @@ def query_server(command:str) -> str:
     """
 
     client = docker.from_env()
-    # container = client.containers.get('minecraft-mc-1')
-    container = client.containers.get('minecraft-dev-mc-1') # should this throw error???
+    container = client.containers.get('minecraft-mc-1')
 
     exec_log = container.exec_run(f"rcon-cli {command}", stdout=True, stderr=True).output.decode()
 
