@@ -47,11 +47,11 @@ class ServerStatus:
                 file = json.load(open_file)
                 self.version = file['version']
                 self.server_last_queried = file['server_last_queried']
-                self.player_details = file['player_details']
+                self.player_details = file['player_details'] if file['player_details'] != "null" else {}
         else:
             self.version = 2 # schema version
             self.server_last_queried = now()
-            self.player_details = {}
+            self.player_details = "null"
 
 
     def save_to_file(self, filepath:str="server_status.json") -> None:
