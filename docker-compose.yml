@@ -50,6 +50,7 @@ services:
         mcdouggets
         aixuree
         t0nlycrafter
+        withergames1029
     volumes:
       - ./minecraft-data:/data
     restart: 'unless-stopped'
