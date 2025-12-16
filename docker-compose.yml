@@ -16,6 +16,7 @@ services:
       RCON_CMDS_STARTUP: |-
         gamerule keepInventory true
         gamerule maxEntityCramming 0
+        gamerule playersSleepingPercentage 0
       DIFFICULTY: "hard"
       MAX_PLAYERS: "10"
       FORCE_GAMEMODE: "true"
