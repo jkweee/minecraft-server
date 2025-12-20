@@ -138,6 +138,7 @@ def query_server(command:str) -> str:
 
     client = docker.from_env()
     container = client.containers.get('minecraft-mc-1')
+    # container = client.containers.get('minecraft-dev-mc-1') # dev container
 
     exec_log = container.exec_run(f"rcon-cli {command}", stdout=True, stderr=True).output.decode()
 
@@ -237,6 +238,7 @@ def send_telegram_updates() -> None:
     current_status = get_current_server_status()
     current_players = current_status.get_online_players()
     current_player_count = len(current_players)
+    current_status = update_login_and_logout_details(current_status) # not needed for this legacy function but good for data integrity
 
     # construct status message
     diff = current_player_count - previous_player_count
@@ -249,7 +251,6 @@ def send_telegram_updates() -> None:
         send(status_message)
 
     # save and log
-    update_login_and_logout_details(current_status) # not needed for this legacy function but good for data integrity
     current_status.save_to_file('server_status.json')
     logger.info(f"{time.strftime('%Y-%m-%d %H:%M:%S')} - {status_message}")
 
