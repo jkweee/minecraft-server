@@ -4,4 +4,6 @@ minecraft-data/*
 minecraft-data-*/*
 server_status.json
 server_status.log
+monitor_server.log
+server_state.json
 venv/
