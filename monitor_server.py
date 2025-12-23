@@ -228,6 +228,7 @@ def send_telegram_updates(previous_state:ServerState, current_state:ServerState)
     if current_player_count > 0:
         state_message += f": {current_players}"
     if previous_player_count != current_player_count:
+        logger.info(f"Sending the following message to telegram: {state_message}")
         send(state_message)
 
 

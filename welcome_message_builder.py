@@ -57,7 +57,7 @@ class WelcomeBackMessage:
         ]
 
 
-    def unix_to_relative_descriptor(past_timestamp: int) -> str:
+    def unix_to_relative_descriptor(self, past_timestamp: int) -> str:
         """
         Converts a unix timestamp to a relative English descriptor (e.g., '1 minute ago', '2 days ago').
         Uses the largest appropriate unit (days, hours, minutes, seconds).
@@ -90,23 +90,28 @@ class WelcomeBackMessage:
         :return: a formatted tellraw command string containing the welcome message
         """
 
+        # TODO: Logic handling between this and caller in monitor_server.py is flaky at best. Fix it!
         # build the base text by applying params to the templates
         if new_player:
+            # option 1: new player
             template = random.choice(self.templates_for_new_players)
             base_text = template.format(
                 username=username
             )
         elif quick_relog:
+            # option 4: quick login-logout
             template = random.choice(self.templates_for_quick_relogs)
             base_text = template.format(
                 username=username
             )
         elif count == 0:
+            # option 5: generic message
             template = random.choice(self.simple_templates)
             base_text = template.format(
                 username=username
             )
         elif last_seen_player and last_seen_time:
+            # option 2: you missed a few people, the last one just left less than an hour ago
             template = random.choice(self.templates_with_counts_and_last_seen)
             base_text = template.format(
                 username=username,
@@ -115,6 +120,7 @@ class WelcomeBackMessage:
                 last_seen_time=self.unix_to_relative_descriptor(last_seen_time) # convert timestamp to descriptor
             )
         else:
+            # option 3: you missed a few people
             template = random.choice(self.templates_with_counts)
             base_text = template.format(
                 username=username, 
