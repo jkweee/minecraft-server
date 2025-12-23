@@ -204,7 +204,7 @@ def send_welcome_message(current_state:ServerState, target_player:str) -> None:
             username=target_player,
         )
 
-    logger.info(f"Sending server message to {target_player} with option {option_chosen}")
+    logger.info(f"Sending server message to player: {target_player}, option: {option_chosen}")
     send_command(message)
 
 
@@ -270,12 +270,12 @@ if __name__ == "__main__":
     except Exception as e:
         logger.error(f"Something went wrong when sending Telegram updates: {e}")
 
-    # try:
-    #     new_players = compare_population_difference(previous_state, current_state)[0]
-    #     for player in new_players:
-    #         send_welcome_message(current_state, player)
-    # except Exception as e:
-    #     logger.error(f"Something went wrong when trying to send welcome message: {e}")
+    try:
+        new_players = compare_population_difference(previous_state, current_state)[0]
+        for player in new_players:
+            send_welcome_message(current_state, player)
+    except Exception as e:
+        logger.error(f"Something went wrong when trying to send welcome message: {e}")
 
     # 3. Save state to file
     current_state.save_to_file('server_state.json')
