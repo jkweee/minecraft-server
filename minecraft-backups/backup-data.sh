@@ -24,5 +24,8 @@ echo "$current_datetime Compressed backup to $destination.tar.gz and removed the
 
 # Final log: add to log file
 echo "$current_datetime Finished backing up!" | tee $logfile
+# List individual file sizes
 du -sh ./*
-# ^ TODO: highlight the new one?
+# Print total size of the current folder in GB
+total_size=$(du -sb . | awk '{printf "%.2f", $1/1024/1024/1024}')
+echo "Total backup folder size: $total_size GB"
