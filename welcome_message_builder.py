@@ -77,7 +77,15 @@ class WelcomeBackMessage:
             return f"{days} day{'s' if days != 1 else ''} ago"
 
 
-    def build_message(self, username:str, count:int=0, last_seen_player:str=None, last_seen_time:int=None, quick_relog:bool=False, new_player:bool=False) -> str:
+    def build_message(
+            self,
+            username:str,
+            count:int=0,
+            last_seen_player:str=None,
+            last_seen_time:int=None,
+            quick_relog:bool=False,
+            new_player:bool=False,
+        ) -> str:
         """Builds a welcome message with optional flavours depending on what is passed in.
 
         Both last_seen_player and last_seen_time need to be passed in for the base message to change.
