@@ -204,7 +204,7 @@ def send_welcome_message(current_state:ServerState, target_player:str) -> None:
             username=target_player,
         )
 
-    logger.info(f"Sending server message to player: {target_player}, option: {option_chosen}")
+    logger.info(f"Sending server message to player: {target_player}, option: {option_chosen}, message: {message}")
     send_command(message)
 
 
