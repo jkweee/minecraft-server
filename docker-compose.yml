@@ -34,6 +34,7 @@ services:
         collective
         villager-names-serilum
         appleskin
+        ledger
       SYNC_CHUNK_WRITES: "FALSE"
       SIMULATION_DISTANCE:  "5"
       VIEW_DISTANCE: "18"
