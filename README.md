@@ -34,6 +34,9 @@ To start the server:
 docker compose up -d
 ```
 
+#### About the world data
+This compose file will mount (bind) `./minecraft-data` to `/data` inside the container. This storage persists outside of Docker and will remain until deleted from the host.
+
 ### 2. Monitoring & Automation
 
 - A cron job runs every minute:
