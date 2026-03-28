@@ -12,7 +12,7 @@ services:
       MOTD: |
         \u00A79Chill vibes for chill miners\u00A7r
         \u00A78Keep inventory is on!
-      VERSION: "1.21.11"
+      VERSION: "26.1"
       RCON_CMDS_STARTUP: |-
         gamerule keepInventory true
         gamerule maxEntityCramming 0
@@ -33,8 +33,6 @@ services:
         fallingtree
         collective
         villager-names-serilum
-        appleskin
-        ledger
       SYNC_CHUNK_WRITES: "FALSE"
       SIMULATION_DISTANCE:  "5"
       VIEW_DISTANCE: "18"
