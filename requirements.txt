@@ -1,0 +1,4 @@
+discord.py
+docker
+python-dotenv
+telert

@@ -23,6 +23,7 @@ import os
 import discord
 import asyncio
 import logging
+from dotenv import load_dotenv
 
 logger = logging.getLogger(__name__)
 
@@ -30,6 +31,7 @@ intents = discord.Intents.default()
 intents.message_content = True
 
 client = discord.Client(intents=intents)
+load_dotenv()
 
 
 async def send_discord_message(message: str):
@@ -69,3 +71,5 @@ def send_message(message: str):
     """Sync wrapper for send_discord_message"""
     asyncio.run(send_discord_message(message))
 
+if __name__ == "__main__":
+    send_message("You have run discord_connector.py as a main program. Don't do that.")

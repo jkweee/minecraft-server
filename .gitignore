@@ -7,6 +7,7 @@ server_status.log
 monitor_server.log
 server_state.json
 venv/
+.env
 
 ### From: Python.gitignore
 # Byte-compiled / optimized / DLL files
