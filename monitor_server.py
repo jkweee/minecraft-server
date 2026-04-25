@@ -5,6 +5,7 @@ import logging
 from server_state import ServerState
 from server_state import now
 from telert import send
+from discord_connector import send_message
 from welcome_message_builder import WelcomeBackMessage
 
 logger = logging.getLogger(__name__)
@@ -208,8 +209,9 @@ def send_welcome_message(current_state:ServerState, target_player:str) -> None:
     send_command(message)
 
 
-def send_telegram_updates(previous_state:ServerState, current_state:ServerState) -> None:
-    """This function sends a Telegram update whenever there is a change in server population
+def evaluate_server_population_and_notify(previous_state:ServerState, current_state:ServerState) -> None:
+    """This function evaluates whether there's a change in server population.
+    If there's a difference, send an update via Telegram and Discord.
 
     :param previous_state: previous state of the server
     :param current_state: current state of the server
@@ -228,11 +230,16 @@ def send_telegram_updates(previous_state:ServerState, current_state:ServerState)
     if current_player_count > 0:
         state_message += f": {current_players}"
     if previous_player_count != current_player_count:
-        logger.info(f"Sending the following message to telegram: {state_message}")
+        logger.info(f"Sending the following message to Telegram: {state_message}")
         send(state_message)
+        logger.info(f"Sending the following message to Discord: {state_message}")
+        send_message(state_message)
 
 
 if __name__ == "__main__":
+
+    """NOTE: This script is designed to be run as a scheduled job, not a daemon.        
+    """
 
     # change working directory to file path
     script_directory = os.path.dirname(os.path.abspath(__file__))
@@ -267,9 +274,9 @@ if __name__ == "__main__":
 
     # 2. App logic goes here
     try:
-        send_telegram_updates(previous_state, current_state)
+        evaluate_server_population_and_notify(previous_state, current_state)
     except Exception as e:
-        logger.error(f"Something went wrong when sending Telegram updates: {e}")
+        logger.error(f"Something went wrong when evaluating server population and sending updates: {e}")
 
     try:
         new_players = compare_population_difference(previous_state, current_state)[0]
