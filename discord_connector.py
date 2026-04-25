@@ -42,8 +42,12 @@ async def send_discord_message(message: str):
     """
     
     logger.debug("Getting environment variables and connecting to Discord...")
-    bot_token = os.environ["DISCORD_BOT_TOKEN"]
-    channel_id = int(os.environ["DISCORD_CHANNEL_ID"])
+    try:
+        bot_token = os.environ["DISCORD_BOT_TOKEN"]
+        channel_id = int(os.environ["DISCORD_CHANNEL_ID"])
+    except KeyError as e:
+        logger.error(f"Missing required environment variable: {e}")
+        return
     
     intents = discord.Intents.default()
     client = discord.Client(intents=intents)
@@ -65,6 +69,3 @@ def send_message(message: str):
     """Sync wrapper for send_discord_message"""
     asyncio.run(send_discord_message(message))
 
-
-if __name__ == "__main__":
-    send_message("Hello?")
