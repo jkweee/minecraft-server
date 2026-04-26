@@ -5,7 +5,7 @@ import logging
 from server_state import ServerState
 from server_state import now
 from telert import send
-from discord_connector import send_message
+from discord_connector import send_discord_message_to_bot_experiments_channel
 from welcome_message_builder import WelcomeBackMessage
 
 logger = logging.getLogger(__name__)
@@ -222,18 +222,27 @@ def evaluate_server_population_and_notify(previous_state:ServerState, current_st
     current_players = current_state.get_online_players()
     current_player_count = len(current_players)
 
-    # construct state message
     diff = current_player_count - previous_player_count
     difference_in_players = f"+{str(diff)}" if diff > 0 else str(diff)
 
-    state_message = f"There are {current_player_count} players online ({difference_in_players} △)"
+    # construct debugging message for Telegram
+    activity_message_debug = f"There are {current_player_count} players online ({difference_in_players} △)"
     if current_player_count > 0:
-        state_message += f": {current_players}"
+        activity_message_debug += f": {current_players}"
     if previous_player_count != current_player_count:
-        logger.info(f"Sending the following message to Telegram: {state_message}")
-        send(state_message)
-        logger.info(f"Sending the following message to Discord: {state_message}")
-        send_message(state_message)
+        logger.info(f"Sending the following message to Telegram: {activity_message_debug}")
+        send(activity_message_debug)
+
+    # construct user-friendly message for Discord and send
+    activity_message = f""
+    if current_player_count > 0:
+        activity_message += f"Players online: {current_players}"
+    elif current_player_count == 0:
+        activity_message = "There are no players online."
+    if previous_player_count != current_player_count:
+        logger.info(f"Sending the following message to Discord: {activity_message}")
+        send_discord_message_to_bot_experiments_channel(activity_message)
+        # send_discord_message_to_minecraft_activity_channel(activity_message)
 
 
 if __name__ == "__main__":

@@ -31,10 +31,17 @@ intents = discord.Intents.default()
 intents.message_content = True
 
 client = discord.Client(intents=intents)
+logger.debug("Getting environment variables...")
 load_dotenv()
+try:
+    bot_token = os.environ["DISCORD_BOT_TOKEN"]
+    bot_experiments_channel_id = int(os.environ["DISCORD_CHANNEL_ID_BOT_EXPERIMENTS"])
+    minecraft_activity_channel_id = int(os.environ["DISCORD_CHANNEL_ID_MINECRAFT_ACTIVITY"])
+except KeyError as e:
+    logger.error(f"Missing required environment variable: {e}")
 
 
-async def send_discord_message(message: str):
+async def send_discord_message(bot_token:str, channel_id: int, message: str):
     """
     Send a message to a Discord channel.
     This function assumes token and channel id are available through the environment variables.
@@ -43,14 +50,7 @@ async def send_discord_message(message: str):
         message: The message content to send
     """
     
-    logger.debug("Getting environment variables and connecting to Discord...")
-    try:
-        bot_token = os.environ["DISCORD_BOT_TOKEN"]
-        channel_id = int(os.environ["DISCORD_CHANNEL_ID"])
-    except KeyError as e:
-        logger.error(f"Missing required environment variable: {e}")
-        return
-    
+    logger.debug("Connecting to Discord...")
     intents = discord.Intents.default()
     client = discord.Client(intents=intents)
     
@@ -67,9 +67,15 @@ async def send_discord_message(message: str):
     await client.start(bot_token)
 
 
-def send_message(message: str):
+def send_discord_message_to_bot_experiments_channel(message: str):
     """Sync wrapper for send_discord_message"""
-    asyncio.run(send_discord_message(message))
+    asyncio.run(send_discord_message(bot_token, bot_experiments_channel_id, message))
+
+
+def send_discord_message_to_minecraft_activity_channel(message: str):
+    """Sync wrapper for send_discord_message"""
+    asyncio.run(send_discord_message(bot_token, minecraft_activity_channel_id, message))
+
 
 if __name__ == "__main__":
-    send_message("You have run discord_connector.py as a main program. Don't do that.")
+    send_discord_message_to_bot_experiments_channel("You have run discord_connector.py as a main program. Don't do that.")
