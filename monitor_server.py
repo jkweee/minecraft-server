@@ -233,14 +233,19 @@ def evaluate_server_population_and_notify(previous_state:ServerState, current_st
         logger.info(f"Sending the following message to Telegram: {activity_message_debug}")
         send(activity_message_debug)
 
-    # construct user-friendly message for Discord and send
-    activity_message = f""
-    if current_player_count > 0:
-        activity_message += f"Players online: {current_players}"
-    elif current_player_count == 0:
-        activity_message = "There are no players online."
-    if previous_player_count != current_player_count:
-        logger.info(f"Sending the following message to Discord: {activity_message}")
+    # Discord: per-player join/leave messages and empty server notification
+    logins, logouts = compare_population_difference(previous_state, current_state)
+    for player in logins:
+        activity_message = f"**{player}** just hopped on! ({current_player_count} online)"
+        logger.info(f"Sending Discord join message: {activity_message}")
+        send_discord_message_to_bot_experiments_channel(activity_message)
+    for player in logouts:
+        activity_message = f"**{player}** logged off ({current_player_count} remaining)"
+        logger.info(f"Sending Discord logout message: {activity_message}")
+        send_discord_message_to_bot_experiments_channel(activity_message)
+    if current_player_count == 0 and previous_player_count > 0:
+        activity_message = "All players have left the server."
+        logger.info(f"Sending Discord empty server message: {activity_message}")
         send_discord_message_to_bot_experiments_channel(activity_message)
         # send_discord_message_to_minecraft_activity_channel(activity_message)
 
