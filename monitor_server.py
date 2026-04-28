@@ -5,7 +5,7 @@ import logging
 from server_state import ServerState
 from server_state import now
 from telert import send
-from discord_connector import send_discord_message_to_bot_experiments_channel
+from discord_connector import send_discord_message_to_bot_experiments_channel, send_discord_message_to_minecraft_activity_channel
 from welcome_message_builder import WelcomeBackMessage
 
 logger = logging.getLogger(__name__)
@@ -247,7 +247,8 @@ def evaluate_server_population_and_notify(previous_state:ServerState, current_st
     if discord_lines:
         activity_message = "\n".join(discord_lines)
         logger.info(f"Sending the following message to Discord: {activity_message}")
-        send_discord_message_to_bot_experiments_channel(activity_message)
+        # send_discord_message_to_bot_experiments_channel(activity_message)
+        send_discord_message_to_minecraft_activity_channel(activity_message)
 
 
 if __name__ == "__main__":
