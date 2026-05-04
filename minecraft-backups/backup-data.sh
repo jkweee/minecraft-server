@@ -1,9 +1,28 @@
 #!/bin/bash
-# TO USE: run from minecraft/minecraft-backups
+
+# Load environment variables from .env in the SAME DIRECTORY as this script
+# Required environment variables:
+#   MINECRAFT_BACKUP_DIR  – e.g. /mnt/nas/backups/minecraft-world
+#   MINECRAFT_DATA_DIR    – e.g. /home/user/minecraft/minecraft-data
+source "$(dirname "$0")/.env"
+
 logfile="./backup-data.log"
 current_datetime=$(date +"%Y.%m.%d %H.%M.%S")
-source="../minecraft-data"
-destination="./minecraft-data $current_datetime"
+source="${MINECRAFT_DATA_DIR}"
+destination="${MINECRAFT_BACKUP_DIR}/minecraft-data $current_datetime"
+
+# Set logging to append mode
+exec > >(tee -a "$logfile") 2>&1
+
+# Validate required environment variables
+if [[ -z "${MINECRAFT_DATA_DIR}" ]]; then
+  echo "Error: MINECRAFT_DATA_DIR is not set." >&2
+  exit 1
+fi
+if [[ -z "${MINECRAFT_BACKUP_DIR}" ]]; then
+  echo "Error: MINECRAFT_BACKUP_DIR is not set." >&2
+  exit 1
+fi
 
 # Create backup: turn off saving, save all, copy the directory, turn on saving
 echo "$current_datetime Creating backup from $source ..." | tee $logfile
@@ -25,7 +44,7 @@ echo "$current_datetime Compressed backup to $destination.tar.gz and removed the
 # Final log: add to log file
 echo "$current_datetime Finished backing up!" | tee $logfile
 # List individual file sizes
-du -sh ./*
+du -sh "${MINECRAFT_BACKUP_DIR}"/*
 # Print total size of the current folder in GB
-total_size=$(du -sb . | awk '{printf "%.2f", $1/1024/1024/1024}')
+total_size=$(du -sb "${MINECRAFT_BACKUP_DIR}" | awk '{printf "%.2f", $1/1024/1024/1024}')
 echo "Total backup folder size: $total_size GB"
