@@ -234,6 +234,7 @@ def evaluate_server_population_and_notify(previous_state:ServerState, current_st
         send(activity_message_debug)
 
     # construct user-friendly message for Discord and send
+    # TODO: deal with disconnect-connect cases as to not spam people - should only notify people when off for more than 1 minute (?)
     logins, logouts = compare_population_difference(previous_state, current_state)
     discord_lines = []
     for player in logins:
@@ -283,15 +284,20 @@ if __name__ == "__main__":
     """
 
     # 1. Get current and previous state
-    previous_state = get_previous_server_state()
-    current_state = get_current_server_state()
-    current_state = update_login_and_logout_details(previous_state, current_state)
+    try:
+        previous_state = get_previous_server_state()
+        current_state = get_current_server_state()
+        current_state = update_login_and_logout_details(previous_state, current_state)
+    except Exception as e:
+        logger.error(f"Something went wrong when getting the previous and current states")
+        exit(1)
 
     # 2. App logic goes here
     try:
         evaluate_server_population_and_notify(previous_state, current_state)
     except Exception as e:
         logger.error(f"Something went wrong when evaluating server population and sending updates: {e}")
+        exit(1)
 
     try:
         new_players = compare_population_difference(previous_state, current_state)[0]
@@ -299,6 +305,7 @@ if __name__ == "__main__":
             send_welcome_message(current_state, player)
     except Exception as e:
         logger.error(f"Something went wrong when trying to send welcome message: {e}")
+        exit(1)
 
     # 3. Save state to file
     current_state.save_to_file('server_state.json')
